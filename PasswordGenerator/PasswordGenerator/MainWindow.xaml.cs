@@ -40,7 +40,21 @@ namespace PasswordGenerator
 
         private string generatePassword(int length, bool symbols, bool numbers, bool lowercase, bool uppercase, bool similar, bool ambiguous)
         {
-            return null;
+            Random rnd = new Random();
+            string password = "";
+            for (int i = 0; i < length; i++)
+            {
+                char c = (char)rnd.Next(33, 127);//generate random ascii symbol
+
+                while(!symbols && Char.IsSymbol(c) || !numbers && Char.IsNumber(c) || !lowercase && Char.IsLower(c) ||
+                    !uppercase && Char.IsUpper(c) || similar && "il1Lo0O".Contains(c) || ambiguous && "{}[]()/\\'\"`~,;:.<>".Contains(c))
+                {
+                    c = (char)rnd.Next(33, 127);
+                }
+
+                password += c;
+            }
+            return password;
         }
     }
 }
