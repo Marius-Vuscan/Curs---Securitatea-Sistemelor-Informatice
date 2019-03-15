@@ -72,6 +72,7 @@ namespace PasswordGenerator
                 else
                 {
                     TextWriter tw = new StreamWriter(@"../../TextFile1.txt", true);
+                    tw.Flush();
 
                     for (int i = 0; i < SlotsCreator.dataArray.GetLength(0); i++)
                     {
@@ -87,7 +88,7 @@ namespace PasswordGenerator
                             {
                                 str += (char)encrypted[x];
                             }
-                            tw.Write(str+"12345");
+                            tw.Write(str + "12345");
                         }
                     }
                     tw.Close();
@@ -108,24 +109,41 @@ namespace PasswordGenerator
             try
             {
                 TextReader tr = new StreamReader(@"../../TextFile1.txt", true);
-                string aux = "";
-                while ((aux = tr.ReadLine()) != null)
+                string aux2 = "",aux="";
+                while ((aux2 = tr.ReadLine()) != null)
                 {
-                    byte[] encryptedData = new byte[aux.Length];
-                    for (int i = 0; i < aux.Length; i++)
-                    {
-                        encryptedData[i] = (byte)aux[i];
-                    }
-                    string roundtrip = AesEncrypt.DecryptStringFromBytes_Aes(encryptedData, key, iv);
-                    lastPasswords.Add(roundtrip);
-
-                    foreach (var item in lastPasswords)
-                    {
-                        //LoadAndStatusListBox.Items.Add(item);
-                    }
+                    aux += aux2+"\n";
                 }
+                string aux3 = "";
+                for (int i = 0; i < aux.Length-2; i++)
+                {
+                    aux3 += aux[i];
+                }
+                aux = aux3;
+                string[] encryptedData = aux.Split(new string[] { "12345" }, StringSplitOptions.None);
+
+                    for (int i = 0; i < 27; i++)
+                    {
+                        byte[] encryptedDataByteArray = new byte[encryptedData[i].Length];
+                        for (int y = 0; y < encryptedData[i].Length; y++)
+                        {
+                            encryptedDataByteArray[y] = (byte)encryptedData[i][y];
+                        }
+                        string roundtrip = AesEncrypt.DecryptStringFromBytes_Aes(encryptedDataByteArray, key, iv);
+                        lastPasswords.Add(roundtrip);
+                    }
+                
                 tr.Close();
 
+                int index = 0;
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        SlotsCreator.dataArray[i, j].Text = lastPasswords[index];
+                        index++;
+                    }
+                }
             }
             catch (IOException)
             {
