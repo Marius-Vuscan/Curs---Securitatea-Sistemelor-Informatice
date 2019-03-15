@@ -11,7 +11,7 @@ namespace PasswordGenerator
 {
     class SlotsCreator
     {
-        static TextBox[,] dataArray;
+        public static TextBox[,] dataArray;
         private int numberOfElements;
         private string passWordSet="";
         private int index = 0;

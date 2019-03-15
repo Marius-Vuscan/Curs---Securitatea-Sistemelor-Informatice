@@ -73,20 +73,23 @@ namespace PasswordGenerator
                 {
                     TextWriter tw = new StreamWriter(@"../../TextFile1.txt", true);
 
-                    string original = ResultTextBlock.Text;
-
-                    byte[] encrypted = AesEncrypt.EncryptStringToBytes_Aes(original, key, iv);
-
-                    string str = "";
-
-                    for (int i = 0; i < encrypted.Length; i++)
+                    for (int i = 0; i < SlotsCreator.dataArray.GetLength(0); i++)
                     {
-                        str += (char)encrypted[i];
-                    }
-                    MessageBox.Show(str);
+                        for (int j = 0; j < SlotsCreator.dataArray.GetLength(1); j++)
+                        {
+                            string original = SlotsCreator.dataArray[i, j].Text;//ResultTextBlock.Text;
 
-                    tw.WriteLine(str);
-                    
+                            byte[] encrypted = AesEncrypt.EncryptStringToBytes_Aes(original, key, iv);
+
+                            string str = "";
+
+                            for (int x = 0; x < encrypted.Length; x++)
+                            {
+                                str += (char)encrypted[x];
+                            }
+                            tw.Write(str+"12345");
+                        }
+                    }
                     tw.Close();
                 }
             }
@@ -115,7 +118,7 @@ namespace PasswordGenerator
                     }
                     string roundtrip = AesEncrypt.DecryptStringFromBytes_Aes(encryptedData, key, iv);
                     lastPasswords.Add(roundtrip);
-                    
+
                     foreach (var item in lastPasswords)
                     {
                         //LoadAndStatusListBox.Items.Add(item);
