@@ -88,6 +88,7 @@ namespace PasswordGenerator
                             {
                                 str += (char)encrypted[x];
                             }
+                            //tw.Write(str+"12345", 0, str.Length);
                             tw.Write(str + "12345");
                         }
                     }
@@ -109,30 +110,21 @@ namespace PasswordGenerator
             try
             {
                 TextReader tr = new StreamReader(@"../../TextFile1.txt", true);
-                string aux2 = "",aux="";
-                while ((aux2 = tr.ReadLine()) != null)
-                {
-                    aux += aux2+"\n";
-                }
-                string aux3 = "";
-                for (int i = 0; i < aux.Length-2; i++)
-                {
-                    aux3 += aux[i];
-                }
-                aux = aux3;
+                string aux = "";
+                aux = File.ReadAllText(@"../../TextFile1.txt");
                 string[] encryptedData = aux.Split(new string[] { "12345" }, StringSplitOptions.None);
 
-                    for (int i = 0; i < 27; i++)
+                for (int i = 0; i < 27; i++)
+                {
+                    byte[] encryptedDataByteArray = new byte[encryptedData[i].Length];
+                    for (int y = 0; y < encryptedData[i].Length; y++)
                     {
-                        byte[] encryptedDataByteArray = new byte[encryptedData[i].Length];
-                        for (int y = 0; y < encryptedData[i].Length; y++)
-                        {
-                            encryptedDataByteArray[y] = (byte)encryptedData[i][y];
-                        }
-                        string roundtrip = AesEncrypt.DecryptStringFromBytes_Aes(encryptedDataByteArray, key, iv);
-                        lastPasswords.Add(roundtrip);
+                        encryptedDataByteArray[y] = (byte)encryptedData[i][y];
                     }
-                
+                    string roundtrip = AesEncrypt.DecryptStringFromBytes_Aes(encryptedDataByteArray, key, iv);
+                    lastPasswords.Add(roundtrip);
+                }
+
                 tr.Close();
 
                 int index = 0;

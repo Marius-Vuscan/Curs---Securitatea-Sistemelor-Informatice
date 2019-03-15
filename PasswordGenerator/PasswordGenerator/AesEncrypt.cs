@@ -24,7 +24,8 @@ namespace PasswordGenerator
             {
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
-                
+                aesAlg.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
+
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
                 
                 using (MemoryStream msEncrypt = new MemoryStream())
@@ -57,7 +58,8 @@ namespace PasswordGenerator
             {
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
-                
+                aesAlg.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
+
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
                 
                 using (MemoryStream msDecrypt = new MemoryStream(cipherText))
