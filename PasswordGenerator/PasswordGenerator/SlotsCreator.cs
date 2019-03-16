@@ -45,13 +45,13 @@ namespace PasswordGenerator
             TextBox userTextBox = new TextBox();
             TextBox passTextBox = new TextBox();
             Button useGeneratedButton = new Button();
-            useGeneratedButton.Content = "Use Generated";
+            useGeneratedButton.Content = "*";
             useGeneratedButton.Click += delegate
             {
                 passTextBox.Text = passWordSet;
             };
             Button copyPassButton = new Button();
-            copyPassButton.Content = "Copy Password in Clipboard";
+            copyPassButton.Content = "*";
             copyPassButton.Click += delegate
             {
                 Clipboard.SetText(passTextBox.Text);
